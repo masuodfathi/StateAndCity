@@ -1,5 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using StateAndCity.Data;
+using StateAndCity.Interfaces;
+using StateAndCity.Repository;
+using StateAndCity.Services;
 
 namespace StateAndCity
 {
@@ -12,7 +15,11 @@ namespace StateAndCity
             // Add services to the container.
             builder.Services.AddControllersWithViews();
             builder.Services.AddDbContext<DataContext>(options => 
-                options.UseSqlServer(builder.Configuration.GetConnectionString("")));
+                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+            builder.Services.AddTransient<IStateRepository, StateRepository>();
+            builder.Services.AddTransient<ICityRepository, CityRepository>();
+            builder.Services.AddTransient<IStateService,StateService>();
+            builder.Services.AddTransient<ICityService, CityService>();
 
             var app = builder.Build();
 
