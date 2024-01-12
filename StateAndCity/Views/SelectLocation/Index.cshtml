@@ -1,84 +1,42 @@
 ﻿@model StateAndCity.ViewModels.CityViewModel
 
-<div>
-    <label for="state">Select State:</label>
-    <select id="state" name="state">
-        <option value="">-- Select State --</option>
-        @foreach (var state in Model.States)
-        {
-            <option value="@state.StateId">@state.StateName</option>
-        }
-    </select>
-</div>
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="mb-3">
+                <label for="state" class="form-label">Select State:</label>
+                <select id="state" name="state" class="form-select">
+                    <option value="">-- Select State --</option>
+                    @foreach (var state in Model.States)
+                    {
+                        <option value="@state.StateId">@state.StateName</option>
+                    }
+                </select>
+            </div>
+        </div>
 
-<div>
-    <label for="city" id="cityLabel" style="display: none;">Select City:</label>
-    <select id="city" name="city" disabled>
-        <option value="">-- Select City --</option>
-        @foreach (var city in Model.Cities)
-        {
-            <option value="@city.CityId">@city.CityName</option>
-        }
-    </select>
-</div>
+        <div class="col-md-6">
+            <div class="mb-3">
+                <label for="city" id="cityLabel" class="form-label">Select City:</label>
+                <select id="city" name="city" class="form-select" disabled>
+                    <option value="">-- Select City --</option>
+                    @foreach (var city in Model.Cities)
+                    {
+                        <option value="@city.CityId">@city.CityName</option>
+                    }
+                </select>
+            </div>
+        </div>
+    </div>
 
-<div id="cityImageContainer" style="display: none;">
-    <img id="cityImage" alt="City Image" />
+    <div class="row mt-3">
+        <div class="col-md-6">
+            <div id="cityImageContainer" style="display: none;">
+                <img id="cityImage" class="img-fluid" alt="City Image">
+            </div>
+        </div>
+    </div>
 </div>
 
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-<script>
-    $(document).ready(function () {
-        $('#state').change(function () {
-            var selectedStateId = $(this).val();
-
-            // Reset city dropdown
-            $('#city').val('');
-            $('#city').prop('disabled', true);
-            $('#cityLabel').hide();
-            $('#cityImageContainer').hide();
-
-            if (selectedStateId !== '') {
-                // Fetch cities for the selected state using AJAX
-                $.ajax({
-                    type: 'GET',
-                    url: '/SelectLocation/GetCitiesByState',
-                    data: { stateId: selectedStateId },
-                    success: function (data) {
-                        // Update city dropdown
-                        $('#city').empty();
-                        $('#city').append('<option value="">-- Select City --</option>');
-
-                        $.each(data, function (index, city) {
-                            $('#city').append('<option value="' + city.cityId + '">' + city.cityName + '</option>');
-                        });
-
-                        $('#city').prop('disabled', false);
-                        $('#cityLabel').show();
-                    }
-                });
-            }
-        });
-
-        $('#city').change(function () {
-            var selectedCityId = $(this).val();
-
-            if (selectedCityId !== '') {
-                // Fetch city image path using AJAX
-                $.ajax({
-                    type: 'GET',
-                    url: '/SelectLocation/GetCityImage',
-                    data: { cityId: selectedCityId },
-                    success: function (data) {
-                        // Display city image
-                        $('#cityImage').attr('src', data);
-                        $('#cityImageContainer').show();
-                    }
-                });
-            } else {
-                // Hide city image container if no city selected
-                $('#cityImageContainer').hide();
-            }
-        });
-    });
-</script>
+<script src="~/js/site.js"></script>
