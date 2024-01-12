@@ -31,7 +31,7 @@ namespace StateAndCity.Repository
 
         public ICollection<CityModel> GetCities()
         {
-            return _context.Cities.ToList();
+            return _context.Cities.OrderBy(c => c.CityName).ToList();
         }
 
         public CityModel GetCityByName(string name)
