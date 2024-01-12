@@ -34,7 +34,7 @@ namespace StateAndCity.Repository
 
         public ICollection<StateModel> GetStates()
         {
-            return _context.States.ToList();
+            return _context.States.OrderBy(s => s.StateName).ToList();
         }
     }
 }
